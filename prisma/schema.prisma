@@ -15,6 +15,7 @@ model Restaurant {
   rating Int
   name   String
   site   String
+  email  String
   phone  String
   street String
   city   String
