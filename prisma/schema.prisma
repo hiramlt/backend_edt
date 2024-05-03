@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Restaurant {
+  id     String @id @default(cuid())
+  rating Int
+  name   String
+  site   String
+  phone  String
+  street String
+  city   String
+  state  String
+  lat    Float
+  lng    Float
+}
