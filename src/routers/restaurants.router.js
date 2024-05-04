@@ -3,6 +3,7 @@ import RestaurantsController from '../controllers/restaurants.controller.js'
 
 const router = Router()
 
+router.get('/statistics', RestaurantsController.getStatistics)
 router.post('/', RestaurantsController.create)
 router.get('/', RestaurantsController.getAll)
 router.get('/:id', RestaurantsController.getById)

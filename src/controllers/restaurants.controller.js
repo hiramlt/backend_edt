@@ -48,4 +48,13 @@ export default class RestaurantsController {
       next(error)
     }
   }
+
+  static getStatistics = async (req, res, next) => {
+    try {
+      const statistics = await RestaurantsService.getStatistics(req.query)
+      res.status(200).json(statistics)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

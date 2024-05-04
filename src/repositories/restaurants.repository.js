@@ -20,4 +20,39 @@ export default class RestaurantsRepository {
   static delete(id) {
     return prisma.restaurant.delete({ where: { id } })
   }
+
+  static getInRadius(latitude, longitude, radius) {
+    // One coordinate degree corresponds to 111000 meters aprox.
+    const degreesToMeters = 111000
+
+    // Haversine formula
+    return prisma.restaurant.findMany({
+      where: {
+        AND: [
+          {
+            lat: {
+              gte: latitude - radius / degreesToMeters,
+              lte: latitude + radius / degreesToMeters,
+            },
+          },
+          {
+            lng: {
+              gte:
+                longitude -
+                radius /
+                  (degreesToMeters * Math.cos((latitude * Math.PI) / 180)),
+              lte:
+                longitude +
+                radius /
+                  (degreesToMeters * Math.cos((latitude * Math.PI) / 180)),
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        rating: true,
+      },
+    })
+  }
 }
