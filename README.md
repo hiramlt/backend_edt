@@ -12,6 +12,12 @@ npm install
 npm start
 ```
 
+Before running the application, use the following command to run the database migrations:
+
+```bash
+npx prisma migrate {dbname} --name {migrationname}
+```
+
 Set the necessary environment variables, example:
 
 ```bash

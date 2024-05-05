@@ -1,4 +1,9 @@
+import path from 'path'
+import url from 'url'
 import { Exception } from './errors.js'
+
+const __filename = url.fileURLToPath(import.meta.url)
+export const __dirname = path.dirname(__filename)
 
 export const errorHandler = (error, req, res, next) => {
   const errorData = {

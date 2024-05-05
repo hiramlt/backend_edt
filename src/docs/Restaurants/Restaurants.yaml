@@ -1,0 +1,304 @@
+paths:
+  /restaurants:
+    post:
+      summary: Create a new restaurant
+      tags:
+        - Restaurants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/createRestaurant'
+      responses:
+        201:
+          description: Restaurant created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        400:
+          description: Invalid parameters
+        500:
+          description: 'Internal server error'
+    get:
+      summary: Get all restaurants
+      tags:
+        - Restaurants
+      responses:
+        200:
+          description: List of restaurants obtained successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        500:
+          description: 'Internal server error'
+
+  /restaurants/{id}:
+    get:
+      summary: Get a restaurant by ID
+      tags:
+        - Restaurants
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Restaurant ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Restaurant obtained succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        404:
+          description: Restaurant not found
+        500:
+          description: Internal server error
+    put:
+      summary: Update a restaurant data
+      tags:
+        - Restaurants
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Restaurant ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/updateRestaurant'
+      responses:
+        200:
+          description: Restaurant updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        400:
+          description: Invalid parameters
+        404:
+          description: Restaurant not found
+        500:
+          description: Internal server error
+    delete:
+      summary: Delete a restaurant
+      tags:
+        - Restaurants
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Restaurant ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Restaurant deleted succesfully
+        404:
+          description: Restaurant not found
+        500:
+          description: Internal server error
+
+  /restaurants/statistics:
+    get:
+      summary: Get statistics of restaurants in a given area.
+      tags:
+        - Restaurants
+      parameters:
+        - in: query
+          name: lat
+          schema:
+            type: number
+          description: Latitude coordinate of given position
+        - in: query
+          name: lng
+          schema:
+            type: number
+          description: Longitude coordinate of given position
+        - in: query
+          name: radius
+          schema:
+            type: number
+          description: Radius of the circular area around the given position (in meters)
+      responses:
+        200:
+          description: Restaurants statistics obtained successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Number of restaurants in the area
+                  avg:
+                    type: number
+                    description: Average rating of restaurants in the area
+                  std:
+                    type: number
+                    description: Standard deviation of restaurant's ratings
+                exampe:
+                  count: 3
+                  avg: 3.333333
+                  std: 0.471405
+        400:
+          description: Invalid parameters
+        404:
+          description: No restaurants found in the area
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Restaurant ID
+        rating:
+          type: integer
+          description: Restaurant's rating (0-4)
+        name:
+          type: string
+          description: Restaurant's name
+        site:
+          type: string
+          description: Restaurant's website URL
+        email:
+          type: string
+          description: Restaurant's email
+        phone:
+          type: string
+          description: Restaurant's phone number
+        street:
+          type: string
+          description: Restaurant's street
+        city:
+          type: string
+          description: Restaurant's city
+        state:
+          type: string
+          description: Restaurant's state
+        lat:
+          type: number
+          description: Restaurant's latitude coordinate
+        lng:
+          type: number
+          description: Restaurant's longitude coordinate
+      example:
+        id: 'clvt0kfws000108jpeo26g097'
+        rating: 3
+        name: 'TestRestaurant'
+        site: 'http://testrestaurant.com'
+        email: 'testrestaurant@mail.com'
+        phone: '555717129'
+        street: 'TestStreet'
+        city: 'TestCity'
+        state: 'TestState'
+        lat: 19.421967
+        lng: -99.167630
+
+  requestBodies:
+    createRestaurant:
+      type: object
+      properties:
+        rating:
+          type: integer
+          description: Restaurant's rating (0-4)
+        name:
+          type: string
+          description: Restaurant's name
+        site:
+          type: string
+          description: Restaurant's website URL
+        email:
+          type: string
+          description: Restaurant's email
+        phone:
+          type: string
+          description: Restaurant's phone number
+        street:
+          type: string
+          description: Restaurant's street
+        city:
+          type: string
+          description: Restaurant's city
+        state:
+          type: string
+          description: Restaurant's state
+        lat:
+          type: number
+          description: Restaurant's latitude coordinate
+        lng:
+          type: number
+          description: Restaurant's longitude coordinate
+      example:
+        rating: 3
+        name: 'TestRestaurant'
+        site: 'http://testrestaurant.com'
+        email: 'testrestaurant@mail.com'
+        phone: '555717129'
+        street: 'TestStreet'
+        city: 'TestCity'
+        state: 'TestState'
+        lat: 19.421967
+        lng: -99.167630
+
+    updateRestaurant:
+      type: object
+      properties:
+        rating:
+          type: integer
+          description: Restaurant's rating (0-4)
+          nullable: true
+        name:
+          type: string
+          description: Restaurant's name
+          nullable: true
+        site:
+          type: string
+          description: Restaurant's website URL
+          nullable: true
+        email:
+          type: string
+          description: Restaurant's email
+          nullable: true
+        phone:
+          type: string
+          description: Restaurant's phone number
+          nullable: true
+        street:
+          type: string
+          description: Restaurant's street
+          nullable: true
+        city:
+          type: string
+          description: Restaurant's city
+          nullable: true
+        state:
+          type: string
+          description: Restaurant's state
+          nullable: true
+        lat:
+          type: number
+          description: Restaurant's latitude coordinate
+          nullable: true
+        lng:
+          type: number
+          description: Restaurant's longitude coordinate
+          nullable: true
+      example:
+        rating: 4
+        name: 'TestRestaurant updated'
+        phone: '123456789'
