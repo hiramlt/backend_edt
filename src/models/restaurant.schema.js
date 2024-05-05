@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+const phoneNumberRegex = /^[\d\s-]{6,}$/
+
 export const RestaurantSchema = z.object({
   rating: z
     .number({
@@ -30,7 +32,8 @@ export const RestaurantSchema = z.object({
       required_error: 'phone is required',
       invalid_type_error: 'phone must be a string',
     })
-    .min(1, { message: 'phone can not be empty' }), // Regex validar numero si hay tiempo
+    .min(1, { message: 'phone can not be empty' })
+    .regex(phoneNumberRegex, { message: 'invalid phone format' }),
   street: z
     .string({
       required_error: 'street is required',
@@ -89,7 +92,8 @@ export const UpdateRestaurantSchema = z.object({
       invalid_type_error: 'phone must be a string',
     })
     .min(1, { message: 'phone can not be empty' })
-    .optional(), // Regex validar numero si hay tiempo
+    .regex(phoneNumberRegex, { message: 'invalid phone format' })
+    .optional(),
   street: z
     .string({
       invalid_type_error: 'street must be a string',
